@@ -1,9 +1,8 @@
 package com.javaapp.votesystem.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public class Vote extends AbstractBaseEntity{
+public class Vote extends AbstractBaseEntity {
 
     private LocalDate date;
 
@@ -12,9 +11,7 @@ public class Vote extends AbstractBaseEntity{
     private Restaurant restaurant;
 
     public Vote(LocalDate date, User user, Restaurant restaurant) {
-        this.date = date;
-        this.user = user;
-        this.restaurant = restaurant;
+        this(null, date, user, restaurant);
     }
 
     public Vote(Integer id, LocalDate date, User user, Restaurant restaurant) {

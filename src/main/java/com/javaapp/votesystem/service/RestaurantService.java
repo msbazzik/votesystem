@@ -1,6 +1,5 @@
 package com.javaapp.votesystem.service;
 
-import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +42,5 @@ public class RestaurantService {
     public List<Restaurant> getAllByDate(LocalDate date) {
         Assert.notNull(date, "date must not be null");
         return restaurantRepository.getAll(date);
-    }
-
-    public List<Meal> createMenu(Integer restaurantId, int userId, LocalDate date, List<Meal> meals) {
-        Assert.notNull(meals, "meals must not be null");
-        Assert.notNull(restaurantId, "restaurantId must not be null");
-        Assert.notNull(date, "date must not be null");
-        return restaurantRepository.createMenu(restaurantId, userId, date, meals);
-    }
-
-    public void deleteMenu(int restaurantId, int userId, LocalDate date) {
-        Assert.notNull(date, "date must not be null");
-        checkNotFoundWithId(restaurantRepository.deleteMenu(restaurantId, userId, date), restaurantId);
     }
 }
