@@ -2,45 +2,25 @@ package com.javaapp.votesystem.service;
 
 import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.repository.MealRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
-import java.util.List;
-
-import static com.javaapp.votesystem.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MealService {
+    private final MealRepository mealRepository;
 
-    private final MealRepository repository;
-
-    public MealService(MealRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public MealService(MealRepository mealRepository) {
+        this.mealRepository = mealRepository;
     }
 
-    public Meal get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
+    public Meal createMeal(Meal meal, int restaurantId, int userId) {
+        return null;
     }
 
-    public void delete(int id, int userId) {
-        checkNotFoundWithId(repository.delete(id, userId), id);
+    public void updateMeal(Meal meal, int restaurantId, int userId) {
     }
 
-    public List<Meal> getAll(int userId) {
-        return repository.getAll(userId);
-    }
-
-    public void update(Meal meal, int userId) {
-        Assert.notNull(meal, "meal must not be null");
-        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
-    }
-
-    public Meal create(Meal meal, int userId) {
-        Assert.notNull(meal, "meal must not be null");
-        return repository.save(meal, userId);
-    }
-
-    public Meal getWithUser(int id, int userId) {
-        return checkNotFoundWithId(repository.getWithUser(id, userId), id);
+    public void deleteMeal(int mealId, int restaurantId, int userId) {
     }
 }

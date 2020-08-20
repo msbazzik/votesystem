@@ -1,6 +1,5 @@
 package com.javaapp.votesystem.repository;
 
-import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.model.Vote;
 
 import java.time.LocalDate;
@@ -8,17 +7,11 @@ import java.util.List;
 
 public interface VoteRepository {
 
-    Vote save(Vote vote, int userId);
+    List<Vote> getAll(LocalDate date);
 
-    boolean delete(int id, int userId);
+    boolean delete(int restaurantId, int userId, LocalDate date);
 
-    Vote getByUserId(int userId);
+    Vote get(int restaurantId, int userId, LocalDate date);
 
-    List<Vote> getAll(int userId);
-
-    List<Vote> findAllByDate(LocalDate date);
-
-
-
-    //Map<Restaurant, Integer> getVoteCountsByRestaurant();
+    Vote save(Vote vote);
 }
