@@ -43,7 +43,8 @@ public class RestaurantController {
         int userId = SecurityUtil.authUserId();
         checkNew(restaurant);
         LOG.info("create {} for user {}", restaurant, userId);
-        return restaurantService.create(restaurant, userId);
+        //check role here
+        return restaurantService.create(restaurant);
     }
 
     @DeleteMapping("/{restaurantId}")
@@ -51,7 +52,8 @@ public class RestaurantController {
     public void delete(@PathVariable int restaurantId) {
         int userId = SecurityUtil.authUserId();
         LOG.info("delete restaurant {} for user {}", restaurantId, userId);
-        restaurantService.delete(restaurantId, userId);
+        //check role here
+        restaurantService.delete(restaurantId);
     }
 
     @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +62,8 @@ public class RestaurantController {
         int userId = SecurityUtil.authUserId();
         assureIdConsistent(restaurant, restaurantId);
         LOG.info("update {} for user {}", restaurant, userId);
-        restaurantService.update(restaurant, userId);
+        //check role here
+        restaurantService.update(restaurant);
     }
 
     @GetMapping("/{date}/{restaurantId}")
@@ -87,7 +90,8 @@ public class RestaurantController {
         int userId = SecurityUtil.authUserId();
         checkNew(meal);
         LOG.info("create meal{} for restaurant {} for user{}", meal, restaurantId, userId);
-        return mealService.createMeal(meal, restaurantId, userId);
+        //check role here
+        return mealService.createMeal(meal, restaurantId);
     }
 
     @PutMapping(value = "/{restaurantId}/meal/{mealId}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -96,14 +100,16 @@ public class RestaurantController {
         int userId = SecurityUtil.authUserId();
         assureIdConsistent(meal, mealId);
         LOG.info("update {} for restaurant {} for user {}", meal, restaurantId, userId);
-        mealService.updateMeal(meal, restaurantId, userId);
+        //check role here
+        mealService.updateMeal(meal, restaurantId);
     }
 
     @DeleteMapping("/{restaurantId}/{mealId}")
-   // @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteMeal(@PathVariable int restaurantId, @PathVariable int mealId)  {
+    // @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteMeal(@PathVariable int restaurantId, @PathVariable int mealId) {
         int userId = SecurityUtil.authUserId();
         LOG.info("delete meal {} for user {} for restaurant{}", mealId, userId, restaurantId);
-        mealService.deleteMeal(mealId, restaurantId, userId);
+        //check role here
+        mealService.deleteMeal(mealId, restaurantId);
     }
 }

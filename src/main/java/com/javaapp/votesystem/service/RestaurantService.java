@@ -20,18 +20,18 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    public Restaurant create(Restaurant restaurant, int userId) {
+    public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        return restaurantRepository.save(restaurant, userId);
+        return restaurantRepository.save(restaurant);
     }
 
-    public void delete(int restaurantId, int userId) {
-        checkNotFoundWithId(restaurantRepository.delete(restaurantId, userId), restaurantId);
+    public void delete(int restaurantId) {
+        checkNotFoundWithId(restaurantRepository.delete(restaurantId), restaurantId);
     }
 
-    public void update(Restaurant restaurant, int userId) {
+    public void update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        checkNotFoundWithId(restaurantRepository.save(restaurant, userId), restaurant.getId());
+        checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
     }
 
     public Restaurant getByDate(int restaurantId, LocalDate date) {
