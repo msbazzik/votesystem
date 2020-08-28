@@ -15,6 +15,9 @@ public class Restaurant extends AbstractNamedEntity {
 //        this(null, name);
 //    }
 
+    public Restaurant() {
+    }
+
     // @ConstructorProperties({"id", "name"})
     public Restaurant(Integer id, String name) {
         super(id, name);

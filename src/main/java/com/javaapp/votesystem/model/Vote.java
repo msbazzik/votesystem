@@ -27,6 +27,9 @@ public class Vote extends AbstractBaseEntity {
     @NotNull
     private Restaurant restaurant;
 
+    public Vote() {
+    }
+
     public Vote(LocalDate date, User user, Restaurant restaurant) {
         this(null, date, user, restaurant);
     }

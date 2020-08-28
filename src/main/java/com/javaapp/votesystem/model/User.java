@@ -44,8 +44,8 @@ public class User extends AbstractNamedEntity {
     @OrderBy("date DESC")
     private List<Vote> votes;
 
-//    public User() {
-//    }
+    public User() {
+    }
 
 //    public User(ru.javawebinar.topjava.model.User u) {
 //        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getCaloriesPerDay(), u.isEnabled(), u.getRegistered(), u.getRoles());

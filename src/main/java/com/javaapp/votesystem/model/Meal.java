@@ -26,6 +26,9 @@ public class Meal extends AbstractNamedEntity {
     @NotNull
     private Restaurant restaurant;
 
+    public Meal() {
+    }
+
     public Meal(Integer id, String name, LocalDate date, int price, Restaurant restaurant) {
         super(id, name);
         this.date = date;
