@@ -47,9 +47,9 @@ public class User extends AbstractNamedEntity {
     public User() {
     }
 
-//    public User(ru.javawebinar.topjava.model.User u) {
-//        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getCaloriesPerDay(), u.isEnabled(), u.getRegistered(), u.getRoles());
-//    }
+    public User(com.javaapp.votesystem.model.User u) {
+        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.isEnabled(), u.getRegistered(), u.getRoles());
+    }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, true, new Date(), EnumSet.of(role, roles));

@@ -4,7 +4,6 @@ import com.javaapp.votesystem.model.Meal;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.javaapp.votesystem.RestaurantTestData.*;
@@ -48,5 +47,5 @@ public class MealTestData {
     public static final Meal MEAL10 = new Meal(MEAL_ID10, "meal2_3", LocalDate.of(2020, Month.AUGUST, 21),
             4, RESTAURANT3);
 
-    public static final List<Meal> meals = Arrays.asList(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7, MEAL8, MEAL9, MEAL10);
+    public static final List<Meal> meals = List.of(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7, MEAL8, MEAL9, MEAL10);
 }

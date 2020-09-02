@@ -4,7 +4,6 @@ import com.javaapp.votesystem.model.Vote;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.javaapp.votesystem.RestaurantTestData.*;
@@ -44,5 +43,5 @@ public class VoteTestData {
 //            USER_3, RESTAURANT2);
 
 
-    public static final List<Vote> VOTES = Arrays.asList(VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
+    public static final List<Vote> VOTES = List.of(VOTE1, VOTE2, VOTE3, VOTE4, VOTE5, VOTE6);
 }
