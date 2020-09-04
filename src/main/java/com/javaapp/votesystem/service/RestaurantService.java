@@ -34,6 +34,10 @@ public class RestaurantService {
         checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
     }
 
+    public Restaurant get(int restaurantId) {
+        return checkNotFoundWithId(restaurantRepository.get(restaurantId), restaurantId);
+    }
+
     public Restaurant getByDate(int restaurantId, LocalDate date) {
         Assert.notNull(date, "date must not be null");
         return checkNotFoundWithId(restaurantRepository.getByDate(restaurantId, date), restaurantId);

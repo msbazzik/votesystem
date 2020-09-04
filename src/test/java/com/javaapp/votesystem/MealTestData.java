@@ -10,6 +10,9 @@ import static com.javaapp.votesystem.RestaurantTestData.*;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
+
+    public static final TestMatcher<Meal> MEAL_MATCHER = TestMatcher.usingFieldsComparator("restaurant");
+
     public static final int MEAL_ID1 = START_SEQ + 7;
     public static final int MEAL_ID2 = START_SEQ + 8;
     public static final int MEAL_ID3 = START_SEQ + 9;
@@ -48,4 +51,15 @@ public class MealTestData {
             4, RESTAURANT3);
 
     public static final List<Meal> meals = List.of(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7, MEAL8, MEAL9, MEAL10);
+
+    public static Meal getNew() {
+        return new Meal(null, "NewMeal", LocalDate.of(2020, Month.SEPTEMBER, 1), 12, RESTAURANT3);
+    }
+
+    public static Meal getUpdated() {
+        Meal updated = new Meal(MEAL1);
+        updated.setName("UpdatedName");
+        updated.setPrice(123);
+        return updated;
+    }
 }

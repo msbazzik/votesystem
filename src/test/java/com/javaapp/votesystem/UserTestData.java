@@ -11,7 +11,7 @@ import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 public class UserTestData {
     public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator("registered","votes");
 
-    // public static final int NOT_FOUND = 10;
+    public static final int NOT_FOUND = 10;
     public static final int USER_ID1 = START_SEQ ;
     public static final int USER_ID2 = START_SEQ + 1;
     public static final int USER_ID3 = START_SEQ + 2;
@@ -27,11 +27,10 @@ public class UserTestData {
         return new User(null, "New", "new@gmail.com", "newPass", false, new Date(), Collections.singleton(Role.USER));
     }
 
-//    public static User getUpdated() {
-//        User updated = new User(USER);
-//        updated.setName("UpdatedName");
-//        updated.setCaloriesPerDay(330);
-//        updated.setRoles(Collections.singletonList(Role.ADMIN));
-//        return updated;
-//    }
+    public static User getUpdated() {
+        User updated = new User(USER_1);
+        updated.setName("UpdatedName");
+        updated.setRoles(Collections.singletonList(Role.ADMIN));
+        return updated;
+    }
 }

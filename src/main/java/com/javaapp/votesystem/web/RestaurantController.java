@@ -66,6 +66,12 @@ public class RestaurantController {
         restaurantService.update(restaurant);
     }
 
+    @GetMapping("/{restaurantId}")
+    public Restaurant get(@PathVariable int restaurantId){
+        LOG.info("get restaurant with id {}", restaurantId);
+        return restaurantService.get(restaurantId);
+    }
+
     @GetMapping("/{date}/{restaurantId}")
     public RestaurantToWithMenu getByDate(@PathVariable int restaurantId, @PathVariable LocalDate date) {
         LOG.info("get restaurant with id {} by date {}", restaurantId, date);

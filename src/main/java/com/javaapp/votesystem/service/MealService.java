@@ -1,6 +1,7 @@
 package com.javaapp.votesystem.service;
 
 import com.javaapp.votesystem.model.Meal;
+import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.repository.MealRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,9 @@ public class MealService {
 
     public void deleteMeal(int mealId, int restaurantId) {
         checkNotFoundWithId(mealRepository.delete(mealId, restaurantId), mealId);
+    }
+
+    public Meal get(int mealId, int restaurantId) {
+        return checkNotFoundWithId(mealRepository.get(mealId, restaurantId), mealId);
     }
 }
