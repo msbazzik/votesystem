@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThrows;
 public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
-    protected UserService service;
+    private UserService service;
 
     @Test
     public void create() {
