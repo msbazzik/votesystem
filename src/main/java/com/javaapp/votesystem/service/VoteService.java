@@ -59,7 +59,10 @@ public class VoteService {
     public Vote save(int userId, int restaurantId, LocalDate date) {
         User user = userRepository.get(userId);
         Restaurant restaurant = restaurantRepository.get(restaurantId);
-        return voteRepository.save(new Vote(date, user, restaurant));
+        Vote vote = new Vote(date);
+        vote.setUser(user);
+        vote.setRestaurant(restaurant);
+        return voteRepository.save(vote);
     }
 
     public Vote update(Vote vote, int restaurantId) {

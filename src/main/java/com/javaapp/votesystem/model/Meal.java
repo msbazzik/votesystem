@@ -30,14 +30,13 @@ public class Meal extends AbstractNamedEntity {
     }
 
     public Meal(Meal meal){
-        this(meal.getId(), meal.getName(), meal.getDate(), meal.getPrice(), meal.getRestaurant());
+        this(meal.getId(), meal.getName(), meal.getDate(), meal.getPrice());
     }
 
-    public Meal(Integer id, String name, LocalDate date, int price, Restaurant restaurant) {
+    public Meal(Integer id, String name, LocalDate date, int price) {
         super(id, name);
         this.date = date;
         this.price = price;
-        this.restaurant = restaurant;
     }
 
     public LocalDate getDate() {

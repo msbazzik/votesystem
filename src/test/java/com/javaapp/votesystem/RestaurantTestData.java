@@ -1,7 +1,6 @@
 package com.javaapp.votesystem;
 
 import com.javaapp.votesystem.model.Restaurant;
-import com.javaapp.votesystem.model.User;
 
 import java.util.List;
 

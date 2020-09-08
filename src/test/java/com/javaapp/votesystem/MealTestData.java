@@ -25,41 +25,44 @@ public class MealTestData {
     public static final int MEAL_ID10 = START_SEQ + 16;
 
     public static final Meal MEAL1 = new Meal(MEAL_ID1, "meal1_1", LocalDate.of(2020, Month.AUGUST, 20),
-            50, RESTAURANT1);
+            50);//, RESTAURANT1);
     public static final Meal MEAL2 = new Meal(MEAL_ID2, "meal2_1", LocalDate.of(2020, Month.AUGUST, 20),
-            15, RESTAURANT1);
+            15);//, RESTAURANT1);
     public static final Meal MEAL3 = new Meal(MEAL_ID3, "meal3_1", LocalDate.of(2020, Month.AUGUST, 20),
-            45, RESTAURANT1);
+            45);//, RESTAURANT1);
 
     public static final Meal MEAL4 = new Meal(MEAL_ID4, "meal1_2", LocalDate.of(2020, Month.AUGUST, 20),
-            19, RESTAURANT2);
+            19);//, RESTAURANT2);
     public static final Meal MEAL5 = new Meal(MEAL_ID5, "meal2_2", LocalDate.of(2020, Month.AUGUST, 20),
-            200, RESTAURANT2);
+            200);//, RESTAURANT2);
 
     public static final Meal MEAL6 = new Meal(MEAL_ID6, "meal1_3", LocalDate.of(2020, Month.AUGUST, 20),
-            70, RESTAURANT3);
+            70);//, RESTAURANT3);
 
     public static final Meal MEAL7 = new Meal(MEAL_ID7, "meal1_1", LocalDate.of(2020, Month.AUGUST, 21),
-            55, RESTAURANT1);
+            55);//, RESTAURANT1);
 
     public static final Meal MEAL8 = new Meal(MEAL_ID8, "meal1_2", LocalDate.of(2020, Month.AUGUST, 21),
-            35, RESTAURANT2);
+            35);//, RESTAURANT2);
 
     public static final Meal MEAL9 = new Meal(MEAL_ID9, "meal1_3", LocalDate.of(2020, Month.AUGUST, 21),
-            42, RESTAURANT3);
+            42);//, RESTAURANT3);
     public static final Meal MEAL10 = new Meal(MEAL_ID10, "meal2_3", LocalDate.of(2020, Month.AUGUST, 21),
-            4, RESTAURANT3);
+            4);//, RESTAURANT3);
 
     public static final List<Meal> meals = List.of(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7, MEAL8, MEAL9, MEAL10);
 
     public static Meal getNew() {
-        return new Meal(null, "NewMeal", LocalDate.of(2020, Month.SEPTEMBER, 1), 12, RESTAURANT3);
+        Meal meal = new Meal(null, "NewMeal", LocalDate.of(2020, Month.SEPTEMBER, 1), 12);//, RESTAURANT3);
+        meal.setRestaurant(RESTAURANT1);
+        return meal;
     }
 
     public static Meal getUpdated() {
         Meal updated = new Meal(MEAL1);
         updated.setName("UpdatedName");
         updated.setPrice(123);
+        updated.setRestaurant(RESTAURANT1);
         return updated;
     }
 }
