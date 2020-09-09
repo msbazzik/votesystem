@@ -1,5 +1,6 @@
 package com.javaapp.votesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -42,6 +43,7 @@ public class User extends AbstractNamedEntity {
     //@Column
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("date DESC")
+    @JsonIgnore
     private List<Vote> votes;
 
     public User() {
