@@ -72,21 +72,16 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         assertThrows(NotFoundException.class, () -> service.getByDate(NOT_FOUND, LocalDate.of(2020, Month.AUGUST, 20)));
     }
 
-//    @Test
-//    public void getNotFoundByDate() throws Exception {
-//        assertThrows(NotFoundException.class, () -> service.getByDate(RESTAURANT_ID1, LocalDate.of(2020, Month.AUGUST, 19)));
-//    }
+    @Test
+    public void getNotFoundByDate() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.getByDate(RESTAURANT_ID1, LocalDate.of(2020, Month.AUGUST, 19)));
+    }
 
     @Test
     public void getAllByDate() {
         List<Restaurant> all = service.getAllByDate(LocalDate.of(2020, Month.AUGUST, 20));
         RESTAURANT_MATCHER.assertMatch(all, RESTAURANT1, RESTAURANT2, RESTAURANT3);
     }
-
-//    @Test
-//    public void getAllByDateNotFoundByDate() throws Exception {
-//        assertThrows(NotFoundException.class, () -> service.getAllByDate(LocalDate.of(2020, Month.AUGUST, 19)));
-//    }
 
     @Test
     public void createWithException() throws Exception {

@@ -25,16 +25,12 @@ public class MealServiceTest extends AbstractServiceTest {
     @Test
     public void createMeal() {
         Meal newMeal = MealTestData.getNew();
-        Meal created = service.createMeal(newMeal, newMeal.getRestaurant().getId());
-        newMeal.setId(created.getId());
+        Meal created = service.createMeal(newMeal, RESTAURANT_ID1);
+        Integer newId = created.getId();
+        newMeal.setId(newId);
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(service.get(created.getId(), created.getRestaurant().getId()), newMeal);
     }
-
-//    @Test
-//    public void createNotFoundRestaurant() throws Exception {
-//        assertThrows(NotFoundException.class, () -> service.createMeal(MealTestData.getNew(), NOT_FOUND));
-//    }
 
     @Test
     public void duplicateNameDateIdCreate() {

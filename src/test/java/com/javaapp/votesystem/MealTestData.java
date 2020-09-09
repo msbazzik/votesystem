@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-import static com.javaapp.votesystem.RestaurantTestData.*;
+import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT1;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
@@ -53,9 +53,7 @@ public class MealTestData {
     public static final List<Meal> meals = List.of(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7, MEAL8, MEAL9, MEAL10);
 
     public static Meal getNew() {
-        Meal meal = new Meal(null, "NewMeal", LocalDate.of(2020, Month.SEPTEMBER, 1), 12);//, RESTAURANT3);
-        meal.setRestaurant(RESTAURANT1);
-        return meal;
+        return new Meal(null, "NewMeal", LocalDate.of(2020, Month.SEPTEMBER, 1), 12);
     }
 
     public static Meal getUpdated() {

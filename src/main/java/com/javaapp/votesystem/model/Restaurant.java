@@ -11,10 +11,6 @@ public class Restaurant extends AbstractNamedEntity {
   //  @OrderBy("date DESC")
     private List<Meal> meals;
 
-//    public Restaurant(String name) {
-//        this(null, name);
-//    }
-
     public Restaurant() {
     }
 

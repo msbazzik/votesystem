@@ -69,12 +69,6 @@ public class VoteServiceTest extends AbstractServiceTest {
 
     }
 
-//    @Test
-//    public void deletedNotFoundByUser() {
-//        service.setClock(datetime1);
-//        assertThrows(NotFoundException.class, () -> service.delete(RESTAURANT_ID1, NOT_FOUND, DATE_1));
-//    }
-
     @Test
     public void deletedNotFoundByRestaurant() {
         service.setClock(datetime1);
@@ -98,6 +92,6 @@ public class VoteServiceTest extends AbstractServiceTest {
         service.setClock(LocalDateTime.of(2020, Month.AUGUST, 21, 10, 59));
         validateRootCause(() -> service.vote(0, USER_ID2, LocalDate.of(2020, Month.AUGUST, 21)), ConstraintViolationException.class);
         validateRootCause(() -> service.vote(RESTAURANT_ID1, 0, LocalDate.of(2020, Month.AUGUST, 21)), ConstraintViolationException.class);
-        //?   validateRootCause(() -> service.vote(RESTAURANT_ID1, USER_ID2, null), ConstraintViolationException.class);
+        validateRootCause(() -> service.vote(RESTAURANT_ID1, USER_ID2, null), ConstraintViolationException.class);
     }
 }

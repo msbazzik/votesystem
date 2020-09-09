@@ -57,7 +57,7 @@ public class VoteService {
     }
 
     private boolean checkDateTime(LocalDate date) {
-        if (LocalTime.now(clock).isBefore(VOTE_END_TIME) && date.equals(LocalDate.now(clock))) {
+        if (date == null || (LocalTime.now(clock).isBefore(VOTE_END_TIME) && date.equals(LocalDate.now(clock)))) {
             return true;
         } else return date.isAfter(LocalDate.now(clock));
     }
