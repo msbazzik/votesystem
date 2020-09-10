@@ -12,6 +12,7 @@ import com.javaapp.votesystem.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -79,20 +80,21 @@ public class RestaurantController {
         return restaurantService.get(restaurantId);
     }
 
-    @GetMapping("/{date}/{restaurantId}")
-    public RestaurantToWithMenu getByDate(@PathVariable int restaurantId, @PathVariable LocalDate date) {
+    @GetMapping(value = "/{restaurantId}", params = "date")
+    public RestaurantToWithMenu getByDate(@PathVariable int restaurantId,
+                                          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LOG.info("get restaurant with id {} by date {}", restaurantId, date);
         return RestaurantUtil.createToWithMenu(restaurantService.getByDate(restaurantId, date));
     }
 
-    @GetMapping("/meals/{date}")
-    public List<RestaurantToWithMenu> getAllWithMenuByDate(@PathVariable LocalDate date) {
+    @GetMapping(value = "/meals", params = "date")
+    public List<RestaurantToWithMenu> getAllWithMenuByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LOG.info("get all restaurants with menu by date {}", date);
         return RestaurantUtil.getRestaurantsToWithMenu(restaurantService.getAllByDate(date));
     }
 
-    @GetMapping("/votes/{date}")
-    public List<RestaurantToWithVote> getAllWithVotesByDate(@PathVariable LocalDate date) {
+    @GetMapping(value = "/votes", params = "date")
+    public List<RestaurantToWithVote> getAllWithVotesByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LOG.info("get all restaurants with votes by date {}", date);
         return RestaurantUtil.getRestaurantsToWithVoteCount(restaurantService.getAllByDate(date),
                 voteService.getAllByDate(date));

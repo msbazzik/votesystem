@@ -73,7 +73,11 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-
+        perform((MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1 + "?date=2020-08-20")))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1));
     }
 
     @Test
