@@ -1,8 +1,9 @@
 package com.javaapp.votesystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
 @Entity
@@ -10,8 +11,8 @@ import java.util.List;
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-  //  @OrderBy("date DESC")
-    @JsonIgnore
+    //  @OrderBy("date DESC")
+    //  @JsonIgnore
     private List<Meal> meals;
 
     public Restaurant() {

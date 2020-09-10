@@ -11,7 +11,7 @@ import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
 
-    public static final TestMatcher<Meal> MEAL_MATCHER = TestMatcher.usingFieldsComparator("restaurant");
+    public static final TestMatcher<Meal> MEAL_MATCHER = TestMatcher.usingFieldsComparator(Meal.class,"restaurant");
 
     public static final int MEAL_ID1 = START_SEQ + 7;
     public static final int MEAL_ID2 = START_SEQ + 8;

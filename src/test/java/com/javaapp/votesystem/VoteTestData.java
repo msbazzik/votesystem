@@ -11,7 +11,7 @@ import static com.javaapp.votesystem.UserTestData.USER_2;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class VoteTestData {
-    public static final TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator("user", "restaurant");
+    public static final TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator(Vote.class, "user", "restaurant");
 
     public static final int VOTE_ID1 = START_SEQ + 17;
     public static final int VOTE_ID2 = START_SEQ + 18;

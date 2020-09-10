@@ -7,7 +7,7 @@ import java.util.List;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class RestaurantTestData {
-    public static TestMatcher<Restaurant> RESTAURANT_MATCHER = TestMatcher.usingFieldsComparator("meals");
+    public static TestMatcher<Restaurant> RESTAURANT_MATCHER = TestMatcher.usingFieldsComparator(Restaurant.class,"meals");
 
     public static final int NOT_FOUND = 10;
     public static final int RESTAURANT_ID1 = START_SEQ + 4;
