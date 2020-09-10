@@ -55,7 +55,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{restaurantId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId) {
         int userId = SecurityUtil.authUserId();
         LOG.info("delete restaurant {} for user {}", restaurantId, userId);
@@ -85,7 +85,7 @@ public class RestaurantController {
         return RestaurantUtil.createToWithMenu(restaurantService.getByDate(restaurantId, date));
     }
 
-    @GetMapping("/{date}")
+    @GetMapping("/meals/{date}")
     public List<RestaurantToWithMenu> getAllWithMenuByDate(@PathVariable LocalDate date) {
         LOG.info("get all restaurants with menu by date {}", date);
         return RestaurantUtil.getRestaurantsToWithMenu(restaurantService.getAllByDate(date));
