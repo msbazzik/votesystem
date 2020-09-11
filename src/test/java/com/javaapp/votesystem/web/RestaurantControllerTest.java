@@ -1,6 +1,8 @@
 package com.javaapp.votesystem.web;
 
+import com.javaapp.votesystem.MealTestData;
 import com.javaapp.votesystem.RestaurantTestData;
+import com.javaapp.votesystem.TestUtil;
 import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.service.RestaurantService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
@@ -8,6 +10,7 @@ import com.javaapp.votesystem.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -73,11 +76,13 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-        perform((MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1 + "?date=2020-08-20")))
+        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1 + "?date=2020-08-20")))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1));
+                .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1)).andReturn();
+        Restaurant restaurant = TestUtil.readFromJsonMvcResult(mvcResult, Restaurant.class);
+        MealTestData.MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
     }
 
     @Test
