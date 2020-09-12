@@ -25,7 +25,7 @@ class MealServiceTest extends AbstractServiceTest {
     @Test
     void createMeal() {
         Meal newMeal = MealTestData.getNew();
-        Meal created = service.createMeal(newMeal, RESTAURANT_ID1);
+        Meal created = service.create(newMeal, RESTAURANT_ID1);
         Integer newId = created.getId();
         newMeal.setId(newId);
         MEAL_MATCHER.assertMatch(created, newMeal);
@@ -37,30 +37,30 @@ class MealServiceTest extends AbstractServiceTest {
         Meal meal = new Meal(null, "meal1_1", LocalDate.of(2020, Month.AUGUST, 20),
                 50);
         meal.setRestaurant(RESTAURANT1);
-        assertThrows(DataAccessException.class, () -> service.createMeal(meal, RESTAURANT_ID1));
+        assertThrows(DataAccessException.class, () -> service.create(meal, RESTAURANT_ID1));
     }
 
     @Test
     void updateMeal() {
         Meal meal = MealTestData.getUpdated();
-        service.updateMeal(meal, meal.getRestaurant().getId());
+        service.update(meal, meal.getRestaurant().getId());
         MEAL_MATCHER.assertMatch(service.get(meal.getId(), meal.getRestaurant().getId()), meal);
     }
 
     @Test
     void deleteMeal() {
-        service.deleteMeal(MEAL_ID1, RESTAURANT_ID1);
+        service.delete(MEAL_ID1, RESTAURANT_ID1);
         assertThrows(NotFoundException.class, () -> service.get(MEAL_ID1, RESTAURANT_ID1));
     }
 
     @Test
     void deletedMealNotFound() {
-        assertThrows(NotFoundException.class, () -> service.deleteMeal(NOT_FOUND, RESTAURANT_ID1));
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, RESTAURANT_ID1));
     }
 
     @Test
     void deletedMealNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.deleteMeal(MEAL_ID1, NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID1, NOT_FOUND));
     }
 
     @Test
@@ -81,8 +81,8 @@ class MealServiceTest extends AbstractServiceTest {
 
     @Test
     void createWithException() throws Exception {
-        validateRootCause(() -> service.createMeal(new Meal(null, "  ", LocalDate.of(2020, Month.AUGUST, 20), 1), RESTAURANT_ID1), ConstraintViolationException.class);
-        validateRootCause(() -> service.createMeal(new Meal(null, "Meal1", null, 1), RESTAURANT_ID1), ConstraintViolationException.class);
-        validateRootCause(() -> service.createMeal(new Meal(null, "Meal1", LocalDate.of(2020, Month.AUGUST, 20), 0), RESTAURANT_ID1), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Meal(null, "  ", LocalDate.of(2020, Month.AUGUST, 20), 1), RESTAURANT_ID1), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Meal(null, "Meal1", null, 1), RESTAURANT_ID1), ConstraintViolationException.class);
+        validateRootCause(() -> service.create(new Meal(null, "Meal1", LocalDate.of(2020, Month.AUGUST, 20), 0), RESTAURANT_ID1), ConstraintViolationException.class);
     }
 }

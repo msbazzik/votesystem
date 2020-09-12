@@ -1,8 +1,6 @@
 package com.javaapp.votesystem.web;
 
-import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.model.Restaurant;
-import com.javaapp.votesystem.service.MealService;
 import com.javaapp.votesystem.service.RestaurantService;
 import com.javaapp.votesystem.service.VoteService;
 import com.javaapp.votesystem.to.RestaurantToWithMenu;
@@ -35,9 +33,6 @@ public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
-
-    @Autowired
-    private MealService mealService;
 
     @Autowired
     private VoteService voteService;
@@ -87,7 +82,7 @@ public class RestaurantController {
         return RestaurantUtil.createToWithMenu(restaurantService.getByDate(restaurantId, date));
     }
 
-    @GetMapping(value = "/meals", params = "date")
+    @GetMapping(value = "/dishes", params = "date")
     public List<RestaurantToWithMenu> getAllWithMenuByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LOG.info("get all restaurants with menu by date {}", date);
         return RestaurantUtil.getRestaurantsToWithMenu(restaurantService.getAllByDate(date));
@@ -98,37 +93,5 @@ public class RestaurantController {
         LOG.info("get all restaurants with votes by date {}", date);
         return RestaurantUtil.getRestaurantsToWithVoteCount(restaurantService.getAllByDate(date),
                 voteService.getAllByDate(date));
-    }
-
-    @PostMapping(value = "/{restaurantId}/meals", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Meal> createMealWithLocation(@PathVariable int restaurantId, @RequestBody Meal meal) {
-        int userId = SecurityUtil.authUserId();
-        checkNew(meal);
-        LOG.info("create meal{} for restaurant {} for user{}", meal, restaurantId, userId);
-        //check role here
-        Meal created = mealService.createMeal(meal, restaurantId);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{restaurantId}/meals/{id}")
-                .buildAndExpand(restaurantId, created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
-    }
-
-    @PutMapping(value = "/{restaurantId}/meals/{mealId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void updateMeal(@PathVariable int restaurantId, @RequestBody Meal meal, @PathVariable int mealId) {
-        int userId = SecurityUtil.authUserId();
-        assureIdConsistent(meal, mealId);
-        LOG.info("update {} for restaurant {} for user {}", meal, restaurantId, userId);
-        //check role here
-        mealService.updateMeal(meal, restaurantId);
-    }
-
-    @DeleteMapping("/{restaurantId}/{mealId}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteMeal(@PathVariable int restaurantId, @PathVariable int mealId) {
-        int userId = SecurityUtil.authUserId();
-        LOG.info("delete meal {} for user {} for restaurant{}", mealId, userId, restaurantId);
-        //check role here
-        mealService.deleteMeal(mealId, restaurantId);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.javaapp.votesystem.MealTestData.MEAL_MATCHER;
 import static com.javaapp.votesystem.RestaurantTestData.*;
 import static com.javaapp.votesystem.TestUtil.readFromJson;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,7 +62,6 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         RESTAURANT_MATCHER.assertMatch(restaurantService.get(RESTAURANT_ID1), updated);
-
     }
 
     @Test
@@ -82,26 +82,26 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1)).andReturn();
         Restaurant restaurant = TestUtil.readFromJsonMvcResult(mvcResult, Restaurant.class);
-        MealTestData.MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
+        MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
     }
 
     @Test
     void getAllWithMenuByDate() throws Exception {
+        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(REST_URL + "dishes" + "?date=2020-08-20")))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1, RESTAURANT2, RESTAURANT3)).andReturn();
+//        List<Restaurant> restaurants = TestUtil.readListFromJsonMvcResult(mvcResult, Restaurant.class);
+//        MealTestData.MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
     }
 
     @Test
     void getAllWithVotesByDate() throws Exception {
-    }
-
-    @Test
-    void createMealWithLocation() throws Exception {
-    }
-
-    @Test
-    void updateMeal() throws Exception {
-    }
-
-    @Test
-    void deleteMeal() throws Exception {
+        perform((MockMvcRequestBuilders.get(REST_URL + "votes" + "?date=2020-08-21")))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+        // .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT3, RESTAURANT2)).andReturn();
     }
 }

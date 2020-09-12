@@ -17,17 +17,17 @@ public class MealService {
         this.mealRepository = mealRepository;
     }
 
-    public Meal createMeal(Meal meal, int restaurantId) {
+    public Meal create(Meal meal, int restaurantId) {
         Assert.notNull(meal, "restaurant must not be null");
         return mealRepository.save(meal, restaurantId);
     }
 
-    public void updateMeal(Meal meal, int restaurantId) {
+    public void update(Meal meal, int restaurantId) {
         Assert.notNull(meal, "restaurant must not be null");
         checkNotFoundWithId(mealRepository.save(meal, restaurantId), meal.getId());
     }
 
-    public void deleteMeal(int mealId, int restaurantId) {
+    public void delete(int mealId, int restaurantId) {
         checkNotFoundWithId(mealRepository.delete(mealId, restaurantId), mealId);
     }
 
