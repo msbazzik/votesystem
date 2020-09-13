@@ -14,6 +14,7 @@ import java.time.Month;
 import java.util.List;
 
 import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT_ID1;
+import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT_ID2;
 import static com.javaapp.votesystem.UserTestData.USER_ID1;
 import static com.javaapp.votesystem.UserTestData.USER_ID2;
 import static com.javaapp.votesystem.VoteTestData.*;
@@ -27,6 +28,7 @@ class VoteServiceTest extends AbstractServiceTest {
 
     static final LocalDateTime datetime1 = LocalDateTime.of(2020, Month.AUGUST, 20, 10, 59);
     static final LocalDateTime datetime2 = LocalDateTime.of(2020, Month.AUGUST, 21, 11, 0);
+    static final LocalDateTime datetime3 = LocalDateTime.of(2020, Month.AUGUST, 20, 12, 0);
 
 
     @Test
@@ -41,9 +43,15 @@ class VoteServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void voteAfterEndTime() {
+    void voteSecondTimeAfterEndTime() {
+        service.setClock(datetime3);
+        assertThrows(VotingTimeIsOverException.class, () -> service.vote(RESTAURANT_ID2, USER_ID1, DATE_1));
+    }
+
+    @Test
+    void voteFirstTimeAfterEndTime() {
         service.setClock(datetime2);
-        assertThrows(VotingTimeIsOverException.class, () -> service.vote(RESTAURANT_ID1, USER_ID2, DATE_2));
+        VOTE_MATCHER.assertMatch(service.vote(RESTAURANT_ID1, USER_ID2, DATE_2), getCurrentVote());
     }
 
     @Test

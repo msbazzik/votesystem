@@ -33,8 +33,8 @@ public class DataJpaVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote getByRestaurantByUserByDate(int restaurantId, int userId, LocalDate date) {
-        return crudVoteRepository.getByRestaurantByUserByDate(restaurantId, userId, date);
+    public Vote getByUserByDate(int userId, LocalDate date) {
+        return crudVoteRepository.getByUserByDate(userId, date);
     }
 
     @Override

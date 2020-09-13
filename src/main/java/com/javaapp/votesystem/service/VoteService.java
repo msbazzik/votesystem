@@ -42,14 +42,18 @@ public class VoteService {
     }
 
     public Vote vote(int restaurantId, int userId, LocalDate date) {
-        Vote vote = voteRepository.getByRestaurantByUserByDate(restaurantId, userId, date);
-        if (vote == null && checkDateTime(date)) {
+        Vote vote = voteRepository.getByUserByDate(userId, date);
+        if (vote == null && checkDate(date)) {
             return save(userId, restaurantId, date);
         } else if (vote != null && checkDateTime(date)) {
             return update(vote, restaurantId);
         } else {
             throw new VotingTimeIsOverException("Vote time: " + VOTE_END_TIME + " is over.");
         }
+    }
+
+    private boolean checkDate(LocalDate date) {
+        return date == null || date.equals(LocalDate.now(clock)) || date.isAfter(LocalDate.now(clock));
     }
 
     private boolean checkDateTime(LocalDate date) {

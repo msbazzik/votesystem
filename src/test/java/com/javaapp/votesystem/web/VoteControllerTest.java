@@ -1,17 +1,18 @@
 package com.javaapp.votesystem.web;
 
-import com.javaapp.votesystem.VoteTestData;
+import com.javaapp.votesystem.TestUtil;
+import com.javaapp.votesystem.model.Vote;
 import com.javaapp.votesystem.service.VoteService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT_ID1;
 import static com.javaapp.votesystem.UserTestData.USER_ID1;
 import static com.javaapp.votesystem.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,12 +33,12 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     void vote() throws Exception {
         voteService.setClock(datetime1);
-        perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-21"))
+        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-21"))
                 .andExpect(status().isCreated())
                 .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VoteTestData.VOTE_MATCHER.contentJson(VoteTestData.getCurrentVote()));
-        //compare users?
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
+        Vote vote = TestUtil.readFromJsonMvcResult(mvcResult, Vote.class);
+        VOTE_MATCHER.assertMatch(voteService.get(vote.getId(), USER_ID1), vote);
     }
 
     @Test

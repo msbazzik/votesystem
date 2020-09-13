@@ -3,6 +3,7 @@ package com.javaapp.votesystem.web;
 import com.javaapp.votesystem.MealTestData;
 import com.javaapp.votesystem.RestaurantTestData;
 import com.javaapp.votesystem.TestUtil;
+import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.service.RestaurantService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
@@ -14,7 +15,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.javaapp.votesystem.MealTestData.MEAL_MATCHER;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.javaapp.votesystem.MealTestData.*;
 import static com.javaapp.votesystem.RestaurantTestData.*;
 import static com.javaapp.votesystem.TestUtil.readFromJson;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -59,6 +63,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
                 .andExpect(status().isNoContent());
 
         RESTAURANT_MATCHER.assertMatch(restaurantService.get(RESTAURANT_ID1), updated);
@@ -82,7 +87,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1)).andReturn();
         Restaurant restaurant = TestUtil.readFromJsonMvcResult(mvcResult, Restaurant.class);
-        MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
+        MEAL_MATCHER.assertMatch(restaurant.getMeals(), MEAL1, MEAL2, MealTestData.MEAL3);
     }
 
     @Test
@@ -92,8 +97,13 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT1, RESTAURANT2, RESTAURANT3)).andReturn();
-//        List<Restaurant> restaurants = TestUtil.readListFromJsonMvcResult(mvcResult, Restaurant.class);
-//        MealTestData.MEAL_MATCHER.assertMatch(restaurant.getMeals(), MealTestData.MEAL1, MealTestData.MEAL2, MealTestData.MEAL3);
+        List<Restaurant> restaurants = TestUtil.readListFromJsonMvcResult(mvcResult, Restaurant.class);
+        RESTAURANT_MATCHER.assertMatch(restaurants, RESTAURANT1, RESTAURANT2, RESTAURANT3);
+        List<Meal> meals = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            meals.addAll(restaurant.getMeals());
+        }
+        MealTestData.MEAL_MATCHER.assertMatch(meals, MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6);
     }
 
     @Test
@@ -101,7 +111,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform((MockMvcRequestBuilders.get(REST_URL + "votes" + "?date=2020-08-21")))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-        // .andExpect(RESTAURANT_MATCHER.contentJson(RESTAURANT3, RESTAURANT2)).andReturn();
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(RESTAURANT_VOTE_MATCHER.contentJson(RESTAURANT_TO1, RESTAURANT_TO2));
     }
 }

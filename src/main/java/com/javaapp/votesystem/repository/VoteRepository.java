@@ -13,7 +13,7 @@ public interface VoteRepository {
 
     Vote get(int voteId, int userId);
 
-    Vote getByRestaurantByUserByDate(int restaurantId, int userId, LocalDate date);
+    Vote getByUserByDate(int userId, LocalDate date);
 
     List<Vote> getAllByDate(LocalDate date);
 }

@@ -1,11 +1,14 @@
 package com.javaapp.votesystem.to;
 
 public class RestaurantToWithVote {
-    private final Integer id;
+    private Integer id;
 
-    private final String name;
+    private String name;
 
-    private final int voteCount;
+    private int voteCount;
+
+    public RestaurantToWithVote() {
+    }
 
     public RestaurantToWithVote(Integer id, String name, int voteCount) {
         this.id = id;
