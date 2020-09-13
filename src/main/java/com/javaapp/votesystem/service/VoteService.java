@@ -41,12 +41,8 @@ public class VoteService {
         this.clock = Clock.fixed(dateTime.atZone(zoneId).toInstant(), zoneId);
     }
 
-    public List<Vote> getAllByDate(LocalDate date) {
-        return voteRepository.getAll(date);
-    }
-
     public Vote vote(int restaurantId, int userId, LocalDate date) {
-        Vote vote = voteRepository.get(restaurantId, userId, date);
+        Vote vote = voteRepository.getByRestaurantByUserByDate(restaurantId, userId, date);
         if (vote == null && checkDateTime(date)) {
             return save(userId, restaurantId, date);
         } else if (vote != null && checkDateTime(date)) {
@@ -77,15 +73,19 @@ public class VoteService {
         return voteRepository.save(vote);
     }
 
-    public void delete(int restaurantId, int userId, LocalDate date) {
+    public void delete(int voteId, int userId, LocalDate date) {
         if (checkDateTime(date)) {
-            checkNotFoundWithId(voteRepository.delete(restaurantId, userId, date), restaurantId);
+            checkNotFoundWithId(voteRepository.delete(voteId, userId), voteId);
         } else {
             throw new VotingTimeIsOverException("Vote time: " + VOTE_END_TIME + " is over.");
         }
     }
 
-    public Vote get(int restaurantId, int userId, LocalDate date) {
-        return checkNotFoundWithId(voteRepository.get(restaurantId, userId, date), restaurantId);
+    public Vote get(int voteId, int userId) {
+        return checkNotFoundWithId(voteRepository.get(voteId, userId), voteId);
+    }
+
+    public List<Vote> getAllByDate(LocalDate date) {
+        return voteRepository.getAllByDate(date);
     }
 }

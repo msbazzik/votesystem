@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,17 +27,9 @@ public class VoteController {
     @Autowired
     private VoteService voteService;
 
-    @GetMapping(value = "/{restaurantId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Vote get(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                    @PathVariable int restaurantId) {
-        int userId = SecurityUtil.authUserId();
-        LOG.info("get vote for restaurant {} for user {} by date {}", restaurantId, userId, date);
-        return voteService.get(restaurantId, userId, date);
-    }
-
-    @PutMapping(value = "/{restaurantId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> vote(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                                     @PathVariable int restaurantId) {
+    @PutMapping(params = {"restaurantId", "date"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Vote> vote(@RequestParam int restaurantId,
+                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         int userId = SecurityUtil.authUserId();
         LOG.debug("vote for restaurant {} for user {}", restaurantId, userId);
         Vote created = voteService.vote(restaurantId, userId, date);
@@ -46,12 +39,26 @@ public class VoteController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @DeleteMapping(value = "/{restaurantId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{voteId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-                       @PathVariable int restaurantId) {
+    public void delete(@PathVariable int voteId,
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         int userId = SecurityUtil.authUserId();
-        LOG.info("delete vote for restaurant {} for user {}", restaurantId, userId);
-        voteService.delete(restaurantId, userId, date);
+        LOG.info("delete vote {} for user {}", voteId, userId);
+        voteService.delete(voteId, userId, date);
+    }
+
+    @GetMapping(value = "/{voteId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Vote get(@PathVariable int voteId) {
+        int userId = SecurityUtil.authUserId();
+        LOG.info("get vote {} for user {}", voteId, userId);
+        return voteService.get(voteId, userId);
+    }
+
+    //check admin here
+    @GetMapping(params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Vote> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        LOG.info("get all votes by date {}", date);
+        return voteService.getAllByDate(date);
     }
 }

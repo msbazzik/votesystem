@@ -6,7 +6,6 @@ import com.javaapp.votesystem.service.VoteService;
 import com.javaapp.votesystem.to.RestaurantToWithMenu;
 import com.javaapp.votesystem.to.RestaurantToWithVote;
 import com.javaapp.votesystem.util.RestaurantUtil;
-import com.javaapp.votesystem.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +39,9 @@ public class RestaurantController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
         //check role here
-        int userId = SecurityUtil.authUserId();
+        // int userId = SecurityUtil.authUserId();
         checkNew(restaurant);
-        LOG.info("create {} for user {}", restaurant, userId);
+        LOG.info("create {}", restaurant);
         Restaurant created = restaurantService.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -53,8 +52,8 @@ public class RestaurantController {
     @DeleteMapping("/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId) {
-        int userId = SecurityUtil.authUserId();
-        LOG.info("delete restaurant {} for user {}", restaurantId, userId);
+        //  int userId = SecurityUtil.authUserId();
+        LOG.info("delete restaurant {}", restaurantId);
         //check role here
         restaurantService.delete(restaurantId);
     }
@@ -62,9 +61,9 @@ public class RestaurantController {
     @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int restaurantId) {
-        int userId = SecurityUtil.authUserId();
+        // int userId = SecurityUtil.authUserId();
         assureIdConsistent(restaurant, restaurantId);
-        LOG.info("update {} for user {}", restaurant, userId);
+        LOG.info("update {}", restaurant);
         //check role here
         restaurantService.update(restaurant);
     }

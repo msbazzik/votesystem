@@ -13,6 +13,7 @@ import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 public class VoteTestData {
     public static final TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator(Vote.class, "user", "restaurant");
 
+    public static final int NOT_FOUND = 10;
     public static final int VOTE_ID1 = START_SEQ + 17;
     public static final int VOTE_ID2 = START_SEQ + 18;
     public static final int VOTE_ID3 = START_SEQ + 19;
@@ -42,6 +43,13 @@ public class VoteTestData {
 
     public static Vote getNew() {
         Vote vote = new Vote(null, DATE_2);
+        vote.setRestaurant(RESTAURANT1);
+        vote.setUser(USER_2);
+        return vote;
+    }
+
+    public static Vote getCurrentVote() {
+        Vote vote = new Vote(100023, DATE_2);
         vote.setRestaurant(RESTAURANT1);
         vote.setUser(USER_2);
         return vote;
