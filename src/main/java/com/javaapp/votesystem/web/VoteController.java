@@ -32,11 +32,17 @@ public class VoteController {
                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         int userId = SecurityUtil.authUserId();
         LOG.debug("vote for restaurant {} for user {}", restaurantId, userId);
-        Vote created = voteService.vote(restaurantId, userId, date);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        Vote vote = voteService.getByUserByDate(userId, date);
+        if (vote == null) {
+            vote = voteService.vote(restaurantId, userId, date);
+            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(REST_URL + "/{id}")
+                    .buildAndExpand(vote.getId()).toUri();
+            return ResponseEntity.created(uriOfNewResource).body(vote);
+        } else {
+            vote = voteService.vote(restaurantId, userId, date);
+            return ResponseEntity.status(HttpStatus.OK).body(vote);
+        }
     }
 
     @DeleteMapping(value = "/{voteId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)

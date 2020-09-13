@@ -28,13 +28,25 @@ class VoteControllerTest extends AbstractControllerTest {
     private VoteService voteService;
 
     static final LocalDateTime datetime1 = LocalDateTime.of(2020, Month.AUGUST, 20, 10, 59);
-    static final LocalDateTime datetime2 = LocalDateTime.of(2020, Month.AUGUST, 21, 11, 0);
+    static final LocalDateTime datetime2 = LocalDateTime.of(2020, Month.AUGUST, 21, 10, 59);
+    static final LocalDateTime datetime3 = LocalDateTime.of(2020, Month.AUGUST, 22, 12, 0);
 
     @Test
-    void vote() throws Exception {
-        voteService.setClock(datetime1);
-        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-21"))
+    void voteCreated() throws Exception {
+        voteService.setClock(datetime3);
+        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-22"))
                 .andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
+        Vote vote = TestUtil.readFromJsonMvcResult(mvcResult, Vote.class);
+        VOTE_MATCHER.assertMatch(voteService.get(vote.getId(), USER_ID1), vote);
+    }
+
+    @Test
+    void voteChanged() throws Exception {
+        voteService.setClock(datetime2);
+        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100005&date=2020-08-21"))
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
         Vote vote = TestUtil.readFromJsonMvcResult(mvcResult, Vote.class);

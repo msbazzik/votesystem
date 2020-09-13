@@ -42,7 +42,7 @@ public class VoteService {
     }
 
     public Vote vote(int restaurantId, int userId, LocalDate date) {
-        Vote vote = voteRepository.getByUserByDate(userId, date);
+        Vote vote = getByUserByDate(userId, date);
         if (vote == null && checkDate(date)) {
             return save(userId, restaurantId, date);
         } else if (vote != null && checkDateTime(date)) {
@@ -91,5 +91,9 @@ public class VoteService {
 
     public List<Vote> getAllByDate(LocalDate date) {
         return voteRepository.getAllByDate(date);
+    }
+
+    public Vote getByUserByDate(int userId, LocalDate date) {
+        return voteRepository.getByUserByDate(userId, date);
     }
 }

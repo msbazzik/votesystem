@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT1;
+import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT3;
 import static com.javaapp.votesystem.UserTestData.USER_2;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
@@ -34,6 +35,12 @@ public class VoteTestData {
         Vote vote = new Vote(null, DATE_2);
         vote.setRestaurant(RESTAURANT1);
         vote.setUser(USER_2);
+        return vote;
+    }
+
+    public static Vote getUpdated() {
+        Vote vote = new Vote(VOTE_ID1, DATE_1);
+        vote.setRestaurant(RESTAURANT3);
         return vote;
     }
 
