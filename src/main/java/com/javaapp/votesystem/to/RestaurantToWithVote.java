@@ -1,15 +1,18 @@
 package com.javaapp.votesystem.to;
 
+import java.beans.ConstructorProperties;
+
 public class RestaurantToWithVote {
-    private Integer id;
+    private final Integer id;
 
-    private String name;
+    private final String name;
 
-    private int voteCount;
+    private final int voteCount;
 
-    public RestaurantToWithVote() {
-    }
-
+    //
+//    public RestaurantToWithVote() {
+//    }
+    @ConstructorProperties({"id","name", "voteCount"})
     public RestaurantToWithVote(Integer id, String name, int voteCount) {
         this.id = id;
         this.name = name;
