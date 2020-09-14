@@ -9,6 +9,7 @@ import com.javaapp.votesystem.repository.VoteRepository;
 import com.javaapp.votesystem.util.exception.VotingTimeIsOverException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.util.List;
@@ -41,6 +42,7 @@ public class VoteService {
         this.clock = Clock.fixed(dateTime.atZone(zoneId).toInstant(), zoneId);
     }
 
+    @Transactional
     public Vote vote(int restaurantId, int userId, LocalDate date) {
         Vote vote = getByUserByDate(userId, date);
         if (vote == null && checkDate(date)) {
