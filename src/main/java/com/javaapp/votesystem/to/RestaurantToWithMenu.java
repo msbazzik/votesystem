@@ -4,21 +4,16 @@ import com.javaapp.votesystem.model.Meal;
 
 import java.util.List;
 
-public class RestaurantToWithMenu {
-    private final Integer id;
+public class RestaurantToWithMenu extends BaseTo{
 
     private final String name;
 
     private final List<Meal> meals;
 
     public RestaurantToWithMenu(Integer id, String name, List<Meal> meals) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.meals = meals;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public List<Meal> getMeals() {

@@ -2,25 +2,17 @@ package com.javaapp.votesystem.to;
 
 import java.beans.ConstructorProperties;
 
-public class RestaurantToWithVote {
-    private final Integer id;
+public class RestaurantToWithVote extends BaseTo {
 
     private final String name;
 
     private final int voteCount;
 
-    //
-//    public RestaurantToWithVote() {
-//    }
-    @ConstructorProperties({"id","name", "voteCount"})
+    @ConstructorProperties({"id", "name", "voteCount"})
     public RestaurantToWithVote(Integer id, String name, int voteCount) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.voteCount = voteCount;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getName() {

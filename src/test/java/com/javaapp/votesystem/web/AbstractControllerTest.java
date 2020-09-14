@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
         "classpath:spring/spring-db.xml",
         "classpath:spring/dispatcher-servlet.xml"
 })
-@Transactional
+//@Transactional
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 abstract public class AbstractControllerTest {
 

@@ -11,7 +11,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static com.javaapp.votesystem.UserTestData.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest extends AbstractServiceTest {
 
@@ -79,6 +79,14 @@ class UserServiceTest extends AbstractServiceTest {
         validateRootCause(() -> service.create(new User(null, "", "mail@yandex.ru", "password", Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)), ConstraintViolationException.class);
+    }
+
+    @Test
+    void enable() {
+        service.enable(USER_ID1, false);
+        assertFalse(service.get(USER_ID1).isEnabled());
+        service.enable(USER_ID1, true);
+        assertTrue(service.get(USER_ID1).isEnabled());
     }
 
 //    @Test

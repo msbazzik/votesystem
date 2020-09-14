@@ -2,10 +2,13 @@ package com.javaapp.votesystem.service;
 
 import com.javaapp.votesystem.model.User;
 import com.javaapp.votesystem.repository.UserRepository;
+import com.javaapp.votesystem.to.UserTo;
+import com.javaapp.votesystem.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -51,13 +54,24 @@ public class UserService {
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(userRepository.save(user), user.id());
+//      checkNotFoundWithId : check works only for JDBC, disabled
+        userRepository.save(user);
     }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.id());
+        User updatedUser = UserUtil.updateFromTo(user, userTo);
+        userRepository.save(updatedUser);   // !! need only for JDBC implementation
+    }
+
 
     public User getWithVotes(int id) {
         return checkNotFoundWithId(userRepository.getWithVotes(id), id);
     }
 
+    @Transactional
     public void enable(int id, boolean enabled) {
         User user = get(id);
         user.setEnabled(enabled);
