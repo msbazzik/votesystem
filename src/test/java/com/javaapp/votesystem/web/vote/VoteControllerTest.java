@@ -1,9 +1,10 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.vote;
 
 import com.javaapp.votesystem.TestUtil;
 import com.javaapp.votesystem.model.Vote;
 import com.javaapp.votesystem.service.VoteService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
+import com.javaapp.votesystem.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class VoteControllerTest extends AbstractControllerTest {
 
-    public static final String REST_URL = VoteController.REST_URL + '/';
+    private static final String REST_URL = ProfileVoteController.REST_URL + '/';
 
     @Autowired
     private VoteService voteService;
@@ -74,7 +75,7 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByDate() throws Exception {
-        perform((MockMvcRequestBuilders.get(REST_URL + "?date=2020-08-21")))
+        perform((MockMvcRequestBuilders.get(AdminVoteController.REST_URL + "?date=2020-08-21")))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

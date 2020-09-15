@@ -1,6 +1,5 @@
 package com.javaapp.votesystem.web.user;
 
-import com.javaapp.votesystem.UserTestData;
 import com.javaapp.votesystem.model.User;
 import com.javaapp.votesystem.service.UserService;
 import com.javaapp.votesystem.to.UserTo;

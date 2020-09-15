@@ -1,9 +1,10 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.restaurant;
 
 import com.javaapp.votesystem.MealTestData;
 import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.service.MealService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
+import com.javaapp.votesystem.web.AbstractControllerTest;
 import com.javaapp.votesystem.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class MealControllerTest extends AbstractControllerTest {
 
-    public static final String REST_URL = RestaurantControllerTest.REST_URL + RESTAURANT_ID1 + "/dishes" + '/';
-    ;
+    private static final String REST_URL = RestaurantControllerTest.REST_URL + RESTAURANT_ID1 + "/dishes" + '/';
 
     @Autowired
     private MealService mealService;

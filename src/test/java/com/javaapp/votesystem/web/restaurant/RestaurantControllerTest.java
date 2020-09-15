@@ -1,4 +1,4 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.restaurant;
 
 import com.javaapp.votesystem.MealTestData;
 import com.javaapp.votesystem.RestaurantTestData;
@@ -7,6 +7,7 @@ import com.javaapp.votesystem.model.Meal;
 import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.service.RestaurantService;
 import com.javaapp.votesystem.util.exception.NotFoundException;
+import com.javaapp.votesystem.web.AbstractControllerTest;
 import com.javaapp.votesystem.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class RestaurantControllerTest extends AbstractControllerTest {
 
-    public static final String REST_URL = RestaurantController.REST_URL + '/';
+    static final String REST_URL = AdminRestaurantController.REST_URL + '/';
 
     @Autowired
     private RestaurantService restaurantService;
@@ -92,7 +93,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithMenuByDate() throws Exception {
-        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(REST_URL + "dishes" + "?date=2020-08-20")))
+        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(ProfileRestaurantController.REST_URL + "?date=2020-08-20")))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

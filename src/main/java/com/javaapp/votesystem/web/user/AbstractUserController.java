@@ -4,7 +4,6 @@ import com.javaapp.votesystem.model.User;
 import com.javaapp.votesystem.service.UserService;
 import com.javaapp.votesystem.to.UserTo;
 import com.javaapp.votesystem.util.UserUtil;
-import com.javaapp.votesystem.web.RestaurantController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import static com.javaapp.votesystem.util.ValidationUtil.assureIdConsistent;
 import static com.javaapp.votesystem.util.ValidationUtil.checkNew;
 
 public abstract class AbstractUserController {
-    private static final Logger LOG = LoggerFactory.getLogger(RestaurantController.class);
+    protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserService userService;

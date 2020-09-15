@@ -1,4 +1,4 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.vote;
 
 import com.javaapp.votesystem.model.Vote;
 import com.javaapp.votesystem.service.VoteService;
@@ -15,14 +15,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
-@RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class VoteController {
-    private static final Logger LOG = LoggerFactory.getLogger(VoteController.class);
+@RequestMapping(value = ProfileVoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class ProfileVoteController {
+    private static final Logger LOG = LoggerFactory.getLogger(ProfileVoteController.class);
 
-    static final String REST_URL = "/votes";
+    static final String REST_URL = "/profile/votes";
 
     @Autowired
     private VoteService voteService;
@@ -59,12 +58,5 @@ public class VoteController {
         int userId = SecurityUtil.authUserId();
         LOG.info("get vote {} for user {}", voteId, userId);
         return voteService.get(voteId, userId);
-    }
-
-    //check admin here
-    @GetMapping(params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Vote> getAllByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        LOG.info("get all votes by date {}", date);
-        return voteService.getAllByDate(date);
     }
 }

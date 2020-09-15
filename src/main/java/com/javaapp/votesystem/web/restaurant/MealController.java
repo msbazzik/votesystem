@@ -1,4 +1,4 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.restaurant;
 
 
 import com.javaapp.votesystem.model.Meal;
@@ -18,21 +18,19 @@ import static com.javaapp.votesystem.util.ValidationUtil.assureIdConsistent;
 import static com.javaapp.votesystem.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = MealController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealController {
-    private static final Logger LOG = LoggerFactory.getLogger(RestaurantController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MealController.class);
 
-    public static final String REST_URL = RestaurantController.REST_URL + "/{restaurantId}/dishes";
+    static final String REST_URL = AdminRestaurantController.REST_URL + "/{restaurantId}/dishes";
 
     @Autowired
     private MealService mealService;
 
-    @PostMapping(value = REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@PathVariable int restaurantId, @RequestBody Meal meal) {
-        //  int userId = SecurityUtil.authUserId();
         checkNew(meal);
         LOG.info("create meal{} for restaurant {}", meal, restaurantId);
-        //check role here
         Meal created = mealService.create(meal, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -40,22 +38,18 @@ public class MealController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@PathVariable int restaurantId, @RequestBody Meal meal, @PathVariable int id) {
-        // int userId = SecurityUtil.authUserId();
         assureIdConsistent(meal, id);
         LOG.info("update meal {} for restaurant {}", meal, restaurantId);
-        //check role here
         mealService.update(meal, restaurantId);
     }
 
-    @DeleteMapping(REST_URL + "/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
-        // int userId = SecurityUtil.authUserId();
         LOG.info("delete meal {} for restaurant{}", id, restaurantId);
-        //check role here
         mealService.delete(id, restaurantId);
     }
 }

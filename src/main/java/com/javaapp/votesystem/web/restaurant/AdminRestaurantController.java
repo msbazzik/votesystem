@@ -1,4 +1,4 @@
-package com.javaapp.votesystem.web;
+package com.javaapp.votesystem.web.restaurant;
 
 import com.javaapp.votesystem.model.Restaurant;
 import com.javaapp.votesystem.service.RestaurantService;
@@ -24,11 +24,11 @@ import static com.javaapp.votesystem.util.ValidationUtil.assureIdConsistent;
 import static com.javaapp.votesystem.util.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestaurantController {
-    private static final Logger LOG = LoggerFactory.getLogger(RestaurantController.class);
+@RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminRestaurantController {
+    private static final Logger LOG = LoggerFactory.getLogger(AdminRestaurantController.class);
 
-    static final String REST_URL = "/restaurants";
+    static final String REST_URL = "/admin/restaurants";
 
     @Autowired
     private RestaurantService restaurantService;
@@ -38,8 +38,6 @@ public class RestaurantController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@RequestBody Restaurant restaurant) {
-        //check role here
-        // int userId = SecurityUtil.authUserId();
         checkNew(restaurant);
         LOG.info("create {}", restaurant);
         Restaurant created = restaurantService.create(restaurant);
@@ -52,19 +50,15 @@ public class RestaurantController {
     @DeleteMapping("/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restaurantId) {
-        //  int userId = SecurityUtil.authUserId();
         LOG.info("delete restaurant {}", restaurantId);
-        //check role here
         restaurantService.delete(restaurantId);
     }
 
     @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int restaurantId) {
-        // int userId = SecurityUtil.authUserId();
         assureIdConsistent(restaurant, restaurantId);
         LOG.info("update {}", restaurant);
-        //check role here
         restaurantService.update(restaurant);
     }
 
@@ -79,12 +73,6 @@ public class RestaurantController {
                                           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LOG.info("get restaurant with id {} by date {}", restaurantId, date);
         return RestaurantUtil.createToWithMenu(restaurantService.getByDate(restaurantId, date));
-    }
-
-    @GetMapping(value = "/dishes", params = "date")
-    public List<RestaurantToWithMenu> getAllWithMenuByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        LOG.info("get all restaurants with menu by date {}", date);
-        return RestaurantUtil.getRestaurantsToWithMenu(restaurantService.getAllByDate(date));
     }
 
     @GetMapping(value = "/votes", params = "date")
