@@ -1,5 +1,6 @@
 package com.javaapp.votesystem.service;
 
+import com.javaapp.votesystem.AuthorizedUser;
 import com.javaapp.votesystem.model.User;
 import com.javaapp.votesystem.repository.UserRepository;
 import com.javaapp.votesystem.to.UserTo;
@@ -7,6 +8,10 @@ import com.javaapp.votesystem.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,8 +21,9 @@ import java.util.List;
 import static com.javaapp.votesystem.util.ValidationUtil.checkNotFound;
 import static com.javaapp.votesystem.util.ValidationUtil.checkNotFoundWithId;
 
-@Service
-public class UserService {
+@Service("userService")
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -78,15 +84,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    @Override
-//    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = repository.getByEmail(email.toLowerCase());
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User " + email + " is not found");
-//        }
-//        return new AuthorizedUser(user);
-//    }
-//
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
+    }
+
 //    private User prepareAndSave(User user) {
 //        return repository.save(prepareToSave(user, passwordEncoder));
 //    }

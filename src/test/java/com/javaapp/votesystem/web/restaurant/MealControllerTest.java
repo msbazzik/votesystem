@@ -16,6 +16,8 @@ import static com.javaapp.votesystem.MealTestData.MEAL_ID1;
 import static com.javaapp.votesystem.MealTestData.MEAL_MATCHER;
 import static com.javaapp.votesystem.RestaurantTestData.RESTAURANT_ID1;
 import static com.javaapp.votesystem.TestUtil.readFromJson;
+import static com.javaapp.votesystem.TestUtil.userHttpBasic;
+import static com.javaapp.votesystem.UserTestData.ADMIN;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,7 +34,8 @@ class MealControllerTest extends AbstractControllerTest {
         Meal newMeal = MealTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMeal)))
+                .content(JsonUtil.writeValue(newMeal))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
 
         Meal created = readFromJson(action, Meal.class);
@@ -48,7 +51,8 @@ class MealControllerTest extends AbstractControllerTest {
         Meal updated = MealTestData.getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + MEAL_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
 
         MEAL_MATCHER.assertMatch(mealService.get(MEAL_ID1, RESTAURANT_ID1), updated);
@@ -56,7 +60,8 @@ class MealControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + MEAL_ID1))
+        perform(MockMvcRequestBuilders.delete(REST_URL + MEAL_ID1)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> mealService.get(MEAL_ID1, RESTAURANT_ID1));

@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import static com.javaapp.votesystem.util.SecurityUtil.authUserId;
+import static com.javaapp.votesystem.web.SecurityUtil.authUserId;
 
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)

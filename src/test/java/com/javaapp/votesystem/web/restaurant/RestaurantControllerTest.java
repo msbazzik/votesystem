@@ -22,6 +22,9 @@ import java.util.List;
 import static com.javaapp.votesystem.MealTestData.*;
 import static com.javaapp.votesystem.RestaurantTestData.*;
 import static com.javaapp.votesystem.TestUtil.readFromJson;
+import static com.javaapp.votesystem.TestUtil.userHttpBasic;
+import static com.javaapp.votesystem.UserTestData.ADMIN;
+import static com.javaapp.votesystem.UserTestData.USER_1;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,7 +42,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
         Restaurant newRestaurant = RestaurantTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newRestaurant)))
+                .content(JsonUtil.writeValue(newRestaurant))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
 
         Restaurant created = readFromJson(action, Restaurant.class);
@@ -52,7 +56,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID1))
+        perform(MockMvcRequestBuilders.delete(REST_URL + RESTAURANT_ID1)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> restaurantService.get(RESTAURANT_ID1));
@@ -63,7 +68,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
         Restaurant updated = RestaurantTestData.getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + RESTAURANT_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
@@ -72,7 +78,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1))
+        perform(MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -82,7 +89,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getByDate() throws Exception {
-        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1 + "?date=2020-08-20")))
+        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(REST_URL + RESTAURANT_ID1 + "?date=2020-08-20"))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -93,7 +101,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithMenuByDate() throws Exception {
-        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(ProfileRestaurantController.REST_URL + "?date=2020-08-20")))
+        MvcResult mvcResult = perform((MockMvcRequestBuilders.get(ProfileRestaurantController.REST_URL + "?date=2020-08-20"))
+                .with(userHttpBasic(USER_1)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -109,7 +118,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllWithVotesByDate() throws Exception {
-        perform((MockMvcRequestBuilders.get(REST_URL + "votes" + "?date=2020-08-21")))
+        perform((MockMvcRequestBuilders.get(REST_URL + "votes" + "?date=2020-08-21"))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

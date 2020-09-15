@@ -2,7 +2,7 @@ package com.javaapp.votesystem.web.vote;
 
 import com.javaapp.votesystem.model.Vote;
 import com.javaapp.votesystem.service.VoteService;
-import com.javaapp.votesystem.util.SecurityUtil;
+import com.javaapp.votesystem.web.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

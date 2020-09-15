@@ -14,7 +14,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static com.javaapp.votesystem.UserTestData.USER_ID1;
+import static com.javaapp.votesystem.TestUtil.userHttpBasic;
+import static com.javaapp.votesystem.UserTestData.*;
 import static com.javaapp.votesystem.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,7 +36,8 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     void voteCreated() throws Exception {
         voteService.setClock(datetime3);
-        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-22"))
+        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100004&date=2020-08-22")
+                .with(userHttpBasic(USER_1)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
@@ -46,7 +48,8 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     void voteChanged() throws Exception {
         voteService.setClock(datetime2);
-        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100005&date=2020-08-21"))
+        MvcResult mvcResult = perform(MockMvcRequestBuilders.put(REST_URL + "?restaurantId=100005&date=2020-08-21")
+                .with(userHttpBasic(USER_1)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)).andReturn();
@@ -57,7 +60,8 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     void delete() throws Exception {
         voteService.setClock(datetime1);
-        perform(MockMvcRequestBuilders.delete(REST_URL + VOTE_ID1 + "?date=2020-08-20"))
+        perform(MockMvcRequestBuilders.delete(REST_URL + VOTE_ID1 + "?date=2020-08-20")
+                .with(userHttpBasic(USER_1)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> voteService.get(VOTE_ID1, USER_ID1));
@@ -65,7 +69,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + VOTE_ID1))
+        perform(MockMvcRequestBuilders.get(REST_URL + VOTE_ID1)
+                .with(userHttpBasic(USER_1)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 // https://jira.spring.io/browse/SPR-14472
@@ -75,7 +80,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getAllByDate() throws Exception {
-        perform((MockMvcRequestBuilders.get(AdminVoteController.REST_URL + "?date=2020-08-21")))
+        perform((MockMvcRequestBuilders.get(AdminVoteController.REST_URL + "?date=2020-08-21"))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
