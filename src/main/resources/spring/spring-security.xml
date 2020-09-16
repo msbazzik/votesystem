@@ -21,10 +21,6 @@
     <authentication-manager>
         <authentication-provider user-service-ref="userService">
             <password-encoder ref="passwordEncoder"/>
-            <!--            <user-service>-->
-            <!--                <user name="user1@yandex.ru" password="password1" authorities="ROLE_USER"/>-->
-            <!--                <user name="admin@gmail.com" password="admin" authorities="ROLE_ADMIN"/>-->
-            <!--            </user-service>-->
         </authentication-provider>
     </authentication-manager>
 </beans:beans>

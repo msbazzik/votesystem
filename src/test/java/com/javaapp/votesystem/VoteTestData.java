@@ -38,12 +38,6 @@ public class VoteTestData {
         return vote;
     }
 
-    public static Vote getUpdated() {
-        Vote vote = new Vote(VOTE_ID1, DATE_1);
-        vote.setRestaurant(RESTAURANT3);
-        return vote;
-    }
-
     public static Vote getCurrentVote() {
         Vote vote = new Vote(100023, DATE_2);
         vote.setRestaurant(RESTAURANT1);

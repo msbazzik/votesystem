@@ -19,10 +19,6 @@ public class RestaurantToWithVote extends BaseTo {
         return name;
     }
 
-    public int getVoteCount() {
-        return voteCount;
-    }
-
     @Override
     public String toString() {
         return "RestaurantTo{" +

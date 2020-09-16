@@ -51,7 +51,7 @@ class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getNotFound() throws Exception {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 
@@ -75,7 +75,7 @@ class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void createWithException() throws Exception {
+    void createWithException() {
         validateRootCause(() -> service.create(new User(null, "", "mail@yandex.ru", "password", Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)), ConstraintViolationException.class);
@@ -88,17 +88,4 @@ class UserServiceTest extends AbstractServiceTest {
         service.enable(USER_ID1, true);
         assertTrue(service.get(USER_ID1).isEnabled());
     }
-
-//    @Test
-//    public void getWithVotes() {
-//        User admin = service.getWithVotes(ADMIN_ID);
-//        USER_MATCHER.assertMatch(admin, ADMIN);
-//        VoteTestData.MEAL_MATCHER.assertMatch(admin.getMeals(), MealTestData.ADMIN_MEAL2, MealTestData.ADMIN_MEAL1);
-//    }
-
-//    @Test
-//    public void getWithVotesNotFound() throws Exception {
-//        assertThrows(NotFoundException.class, () ->
-//                service.getWithMeals(1));
-//    }
 }

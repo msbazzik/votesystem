@@ -56,7 +56,7 @@ class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getNotFound() throws Exception {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
     }
 
@@ -68,12 +68,12 @@ class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getNotFoundByRestaurantId() throws Exception {
+    void getNotFoundByRestaurantId() {
         assertThrows(NotFoundException.class, () -> service.getByDate(NOT_FOUND, LocalDate.of(2020, Month.AUGUST, 20)));
     }
 
     @Test
-    void getNotFoundByDate() throws Exception {
+    void getNotFoundByDate() {
         assertThrows(NotFoundException.class, () -> service.getByDate(RESTAURANT_ID1, LocalDate.of(2020, Month.AUGUST, 19)));
     }
 
@@ -84,7 +84,7 @@ class RestaurantServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void createWithException() throws Exception {
+    void createWithException() {
         validateRootCause(() -> service.create(new Restaurant(null, " ")), ConstraintViolationException.class);
     }
 }

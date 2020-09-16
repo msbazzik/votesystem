@@ -13,24 +13,17 @@ import java.util.List;
 public class Restaurant extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    //  @OrderBy("date DESC")
-    //  @JsonIgnore
     @JsonManagedReference
     private List<Meal> meals;
 
     public Restaurant() {
     }
 
-    // @ConstructorProperties({"id", "name"})
     public Restaurant(Integer id, String name) {
         super(id, name);
     }
 
     public List<Meal> getMeals() {
         return meals;
-    }
-
-    public void setMeals(List<Meal> meals) {
-        this.meals = meals;
     }
 }

@@ -40,13 +40,10 @@ public class User extends AbstractNamedEntity {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-//    @Fetch(FetchMode.SUBSELECT)
     private Set<Role> roles;
 
-    //@Column
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @OrderBy("date DESC")
-    //@JsonIgnore
     private List<Vote> votes;
 
     public User() {
@@ -83,10 +80,6 @@ public class User extends AbstractNamedEntity {
 
     public Date getRegistered() {
         return registered;
-    }
-
-    public void setRegistered(Date registered) {
-        this.registered = registered;
     }
 
     public void setEnabled(boolean enabled) {

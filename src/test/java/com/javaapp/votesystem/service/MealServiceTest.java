@@ -70,17 +70,17 @@ class MealServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getNotFound() throws Exception {
+    void getNotFound() {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND, RESTAURANT_ID1));
     }
 
     @Test
-    void getNotFoundByRestaurantId() throws Exception {
+    void getNotFoundByRestaurantId() {
         assertThrows(NotFoundException.class, () -> service.get(MEAL_ID1, NOT_FOUND));
     }
 
     @Test
-    void createWithException() throws Exception {
+    void createWithException() {
         validateRootCause(() -> service.create(new Meal(null, "  ", LocalDate.of(2020, Month.AUGUST, 20), 1), RESTAURANT_ID1), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, "Meal1", null, 1), RESTAURANT_ID1), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new Meal(null, "Meal1", LocalDate.of(2020, Month.AUGUST, 20), 0), RESTAURANT_ID1), ConstraintViolationException.class);

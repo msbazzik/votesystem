@@ -93,7 +93,7 @@ class VoteServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void createWithException() throws Exception {
+    void createWithException() {
         service.setClock(LocalDateTime.of(2020, Month.AUGUST, 21, 10, 59));
         validateRootCause(() -> service.vote(0, USER_ID2, LocalDate.of(2020, Month.AUGUST, 21)), ConstraintViolationException.class);
         validateRootCause(() -> service.vote(RESTAURANT_ID1, 0, LocalDate.of(2020, Month.AUGUST, 21)), ConstraintViolationException.class);

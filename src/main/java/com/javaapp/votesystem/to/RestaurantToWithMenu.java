@@ -16,10 +16,6 @@ public class RestaurantToWithMenu extends BaseTo{
         this.meals = meals;
     }
 
-    public List<Meal> getMeals() {
-        return meals;
-    }
-
     public String getName() {
         return name;
     }
