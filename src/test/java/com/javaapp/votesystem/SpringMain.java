@@ -27,8 +27,8 @@ public class SpringMain {
             TestUtil.mockAuthorize(USER_1);
 
             ProfileRestaurantController controller = appCtx.getBean(ProfileRestaurantController.class);
-            List<RestaurantToWithMenu> list = controller.getAllWithMenuByDate(LocalDate.of(2020, Month.AUGUST, 20));
-
+            List<RestaurantToWithMenu> list = controller.getAllWithMenuByDate(
+                    LocalDate.of(2020, Month.AUGUST, 20), new AuthorizedUser(USER_1));
             System.out.println(list.toString());
         }
     }
