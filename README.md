@@ -24,12 +24,16 @@ REST API
 ###REST Admin API:
 
 - #### get All Users
-`curl -s -X GET http://localhost:8080/votesystem/admin/users`
+`curl -s http://localhost:8080/topjava/rest/admin/users --user admin@gmail.com:admin`
 
 - #### get Users 100001
 `curl -s -X GET http://localhost:8080/votesystem/admin/users/100001`
 
-- #### create User
+- #### register Users
+`curl -s -i -X POST -d '{"name":"New User","email":"test@mail.ru","password":"test-password"}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/votesystem/rest/profile/register`
+
+- #### get Profile
+`curl -s http://localhost:8080/votesystem/rest/profile --user test@mail.ru:test-password`
 
 
 - #### delete User
@@ -47,6 +51,9 @@ REST API
 
 
 ###REST User API:
+
+#### register Users
+`curl -s -i -X POST -d '{"name":"New User","email":"test@mail.ru","password":"test-password"}' -H 'Content-Type:application/json' http://localhost:8080/votesystem/profile/register`
 
 - #### get own profile
 `curl -s -X GET http://localhost:8080/votesystem/profile`

@@ -9,8 +9,10 @@ import com.javaapp.votesystem.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.javaapp.votesystem.TestUtil.readFromJson;
 import static com.javaapp.votesystem.TestUtil.userHttpBasic;
 import static com.javaapp.votesystem.UserTestData.*;
 import static com.javaapp.votesystem.web.user.ProfileRestController.REST_URL;
@@ -44,6 +46,23 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER_1)))
                 .andExpect(status().isNoContent());
         USER_MATCHER.assertMatch(userService.getAll(), ADMIN, USER_2, USER_3);
+    }
+
+    @Test
+    void register() throws Exception {
+        UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
+        User newUser = UserUtil.createNewFromTo(newTo);
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newTo)))
+                .andDo(print())
+                .andExpect(status().isCreated());
+
+        User created = readFromJson(action, User.class);
+        int newId = created.getId();
+        newUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(userService.get(newId), newUser);
     }
 
     @Test

@@ -1,8 +1,8 @@
 package com.javaapp.votesystem.web.vote;
 
+import com.javaapp.votesystem.AuthorizedUser;
 import com.javaapp.votesystem.model.Vote;
 import com.javaapp.votesystem.service.VoteService;
-import com.javaapp.votesystem.web.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,8 +29,9 @@ public class ProfileVoteController {
 
     @PutMapping(params = {"restaurantId", "date"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> vote(@RequestParam int restaurantId,
-                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        int userId = SecurityUtil.authUserId();
+                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                     @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.getId();
         LOG.debug("vote for restaurant {} for user {}", restaurantId, userId);
         Vote vote = voteService.getByUserByDate(userId, date);
         if (vote == null) {
@@ -47,15 +49,16 @@ public class ProfileVoteController {
     @DeleteMapping(value = "/{voteId}", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int voteId,
-                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        int userId = SecurityUtil.authUserId();
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                       @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.getId();
         LOG.info("delete vote {} for user {}", voteId, userId);
         voteService.delete(voteId, userId, date);
     }
 
     @GetMapping(value = "/{voteId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Vote get(@PathVariable int voteId) {
-        int userId = SecurityUtil.authUserId();
+    public Vote get(@PathVariable int voteId, @AuthenticationPrincipal AuthorizedUser authUser) {
+        int userId = authUser.getId();
         LOG.info("get vote {} for user {}", voteId, userId);
         return voteService.get(voteId, userId);
     }

@@ -2,16 +2,18 @@ package com.javaapp.votesystem;
 
 import com.javaapp.votesystem.model.Role;
 import com.javaapp.votesystem.model.User;
-import com.javaapp.votesystem.model.Vote;
+import com.javaapp.votesystem.to.RestaurantToWithMenu;
+import com.javaapp.votesystem.web.restaurant.ProfileRestaurantController;
 import com.javaapp.votesystem.web.user.AdminRestController;
-import com.javaapp.votesystem.web.vote.ProfileVoteController;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.javaapp.votesystem.UserTestData.USER_1;
-import static com.javaapp.votesystem.VoteTestData.VOTE_ID1;
 
 public class SpringMain {
     public static void main(String[] args) {
@@ -24,10 +26,10 @@ public class SpringMain {
 
             TestUtil.mockAuthorize(USER_1);
 
-            ProfileVoteController voteController = appCtx.getBean(ProfileVoteController.class);
-            Vote vote = voteController.get(VOTE_ID1);
+            ProfileRestaurantController controller = appCtx.getBean(ProfileRestaurantController.class);
+            List<RestaurantToWithMenu> list = controller.getAllWithMenuByDate(LocalDate.of(2020, Month.AUGUST, 20));
 
-            System.out.println(vote.toString());
+            System.out.println(list.toString());
         }
     }
 }

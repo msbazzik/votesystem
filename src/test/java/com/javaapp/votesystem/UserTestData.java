@@ -2,6 +2,7 @@ package com.javaapp.votesystem;
 
 import com.javaapp.votesystem.model.Role;
 import com.javaapp.votesystem.model.User;
+import com.javaapp.votesystem.web.json.JsonUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -9,10 +10,10 @@ import java.util.Date;
 import static com.javaapp.votesystem.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
-    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator(User.class, "registered","votes");
+    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator(User.class, "registered", "votes", "password");
 
     public static final int NOT_FOUND = 10;
-    public static final int USER_ID1 = START_SEQ ;
+    public static final int USER_ID1 = START_SEQ;
     public static final int USER_ID2 = START_SEQ + 1;
     public static final int USER_ID3 = START_SEQ + 2;
 
@@ -32,5 +33,9 @@ public class UserTestData {
         updated.setName("UpdatedName");
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
+    }
+
+    public static String jsonWithPassword(User user, String passw) {
+        return JsonUtil.writeAdditionProps(user, "password", passw);
     }
 }
